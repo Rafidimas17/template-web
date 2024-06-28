@@ -6,7 +6,7 @@ if (!function_exists('formatRupiah')) {
     }
 }
 
-if (!function_exists('tgl_indo')) {
+if (!function_exists('date_indo')) {
     function date_indo($tgl)
     {
         if ($tgl != null && $tgl != '') {
