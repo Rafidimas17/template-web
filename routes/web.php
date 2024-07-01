@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 //use Illuminate\Support\Facades\Route;
 use Buki\AutoRoute\AutoRouteFacade as Route;
 use App\Http\Controllers\AksesRouteController;
+use App\Http\Controllers\EncryptionController;
 use App\Http\Controllers\Admin\ArmadaController;
 
 /*
@@ -47,6 +48,7 @@ Route::post('proses_login', 'App\Http\Controllers\Auth\LoginController@proses_lo
 Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/encrypt', [EncryptionController::class, 'encrypt'])->name('encrypt');
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('akses', [App\Http\Controllers\AksesController::class, 'index'])->name('akses');

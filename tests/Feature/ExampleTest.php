@@ -12,6 +12,14 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
+    protected function setUp(): void
+{
+    parent::setUp();
+
+    $this->withoutMiddleware();
+}
+
+
     public function test_example()
     {
         $response = $this->get('/');

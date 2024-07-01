@@ -41,6 +41,10 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    public function get_data_user(Request $request){
+        $User=User::where('UserName',$request->username)->first();
+        return json()->$User;
+    }
     public function proses_login(Request $request)
     {
         $request->validate([

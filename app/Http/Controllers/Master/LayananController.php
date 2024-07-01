@@ -36,9 +36,10 @@ class LayananController extends Controller
     {
         $x = []; 
         if(isset($kode)){
-            $IDLayanan = base64_decode($kode);
+            $IDLayanan = aes128_decrypt($kode);
             $x['data'] = $this->layanan::where('IDLayanan', $IDLayanan)->first();
         }
+        // return response()->json([$IDLayanan]);
         return view('layanan.form', $x);
     }
 
@@ -74,7 +75,7 @@ class LayananController extends Controller
 
     public function getDelete($kode = null)
     {
-        $IDLayanan = base64_decode($kode);
+        $IDLayanan = aes128_decrypt($kode);
         $result = $this->layanan::where('IDLayanan', $IDLayanan)->delete();
 		if ($result) {
             echo json_encode([

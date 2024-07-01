@@ -55,19 +55,41 @@
                         name: 'NamaLevel'
                     },
                     {
-                        data: null,
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row) {
-                            let editURL =
-                                `{{ url('akses/create/${btoa(data.KodeLevel)}') }}`
-                            let edit =
-                                `<a href="${editURL}" class="text-primary" style="margin-right:8px;"><i class="fa fa-edit"></i></a>`
-                            let del =
-                                `<a href="#" data-id="${btoa(data.KodeLevel)}" class="text-danger btn-del"><i class="fa fa-trash"></i></a>`
-                            return `${edit + del}`;
-                        }
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        let editURL = '';
+                        let deleteLink = '';
+
+                        // Encrypt KodeLevel using AJAX
+                        $.ajax({
+                            url: "{{ route('encrypt') }}",
+                            type: 'POST',
+                            data: {
+                                data: data.KodeLevel,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            async: false,  // Ensure this is processed before proceeding
+                            success: function(response) {
+                                let encryptedKodeLevel = response.encrypted;
+                                // Construct the edit URL with the encrypted KodeLevel
+                                editURL = `{{ url('akses/create') }}/${encryptedKodeLevel}`;
+                                // let editURL =
+                                // `{{ url('manajemen-layanan/create/${btoa(data.IDLayanan)}') }}`
+                            
+                                // Construct the delete link with the encrypted KodeLevel
+                                deleteLink = `<a href="#" data-id="${encryptedKodeLevel}" class="text-danger btn-del"><i class="fa fa-trash"></i></a>`;
+                            }
+                        });
+
+                        // Construct the edit link
+                        let editLink = `<a href="${editURL}" class="text-primary" style="margin-right:8px;"><i class="fa fa-edit"></i></a>`;
+
+                        // Return both edit and delete links
+                        return `${editLink}${deleteLink}`;
                     }
+                }
                 ],
                 columnDefs: [{
                     className: "text-center",
@@ -114,7 +136,9 @@
                                 table.ajax.reload();
                                 showSwal('success', 'Informasi', response.msg);
                             }
-                        })
+                        },
+                            
+                    )
                     }
                 })
             });

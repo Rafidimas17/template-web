@@ -275,3 +275,24 @@ if (!function_exists('getRomawi')) {
         }
     }
 }
+if (!function_exists('aes128_encrypt')) {
+    function aes128_encrypt($data)
+    {
+        $key = env('AES_SECRET_KEY');
+        $key = substr(hash('sha256', $key, true), 0, 16);
+        $iv = openssl_random_pseudo_bytes(16);
+        $encrypted = openssl_encrypt($data, 'aes-128-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        return base64_encode($iv . $encrypted);
+    }
+}
+if (!function_exists('aes128_decrypt')) {
+    function aes128_decrypt($data)
+    {
+        $key = env('AES_SECRET_KEY');
+        $key = substr(hash('sha256', $key, true), 0, 16);
+        $data = base64_decode($data);
+        $iv = substr($data, 0, 16);
+        $encrypted = substr($data, 16);
+        return openssl_decrypt($encrypted, 'aes-128-cbc', $key, OPENSSL_RAW_DATA, $iv);
+    }
+}

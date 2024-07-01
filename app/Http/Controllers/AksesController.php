@@ -25,22 +25,43 @@ class AksesController extends Controller
     }
 
 
-    public function index(Request $request)
+    public function index()
     {
         return view('admin.akses.index');
     }
 
     public function xgetlistdata(Request $request)
     {   
+        // $data = $this->akses->getRows($request);
+    // return response()->json($data->original);
         return $this->akses->getRows($request);
     }
+
+//     public function xgetlistdata(Request $request)
+// {   
+//     $data = $this->akses->getRows($request);
+    
+//     $result = [
+//         "draw" => $request->input('draw', 1),
+//         "recordsTotal" => count($data),
+//         "recordsFiltered" => count($data),
+//         "data" => array_map(function($item) {
+//             return [
+//                 'KodeLevel' => $item['KodeLevel']
+//             ];
+//         }, $data)
+//     ];
+
+//     return response()->json($result);
+// }
 
     public function getCreate(Request $request, string $kode = null)
     {
         ## data serverfitur
         $fitur = DB::table('serverfitur')->where('IsAktif', 1)->orderBy('NoUrut', 'ASC')->get();
+        // $KodeLevel = aes128_decrypt($kode);
         if(isset($kode)){
-            $KodeLevel = base64_decode($kode);
+            $KodeLevel = aes128_decrypt($kode);
             $x['data'] = $this->akses::where('KodeLevel', $KodeLevel)->first();
 
             foreach ($fitur as $key => $row) {
@@ -51,6 +72,7 @@ class AksesController extends Controller
 
         $x['fitur'] = $fitur;
         return view('admin.akses.form', $x);
+        // return response()->json()
     }
 
     public function store(Request $request) //save and update with form_validation
@@ -112,29 +134,29 @@ class AksesController extends Controller
 
     public function getDelete($kode = null)
     {
-        $KodeLevel = base64_decode($kode);
+        $KodeLevel = aes128_decrypt($kode);
         $count = User::where(['KodeLevel' => $KodeLevel])->count();
-
-        if($count > 0){
-            echo json_encode([
-                'status' => false,
-                'msg'  => "Maaf data sudah digunakan transaksi"
-            ]);
-        } else {
-            DB::table('fiturlevel')->where('KodeLevel', $KodeLevel)->delete();
-            $result = $this->akses::where('KodeLevel', $KodeLevel)->delete();
-            if ($result) {
-                echo json_encode([
-                    'status' => true,
-                    'msg'  => "Berhasil Menghapus Data"
-                ]);
-            } else {
-                echo json_encode([
-                    'status' => false,
-                    'msg'  => "Gagal Menghapus Data"
-                ]);
-            }
-        }
+        return response()->json([$count]);
+        // if($count > 0){
+        //     echo json_encode([
+        //         'status' => false,
+        //         'msg'  => "Maaf data sudah digunakan transaksi"
+        //     ]);
+        // } else {
+        //     DB::table('fiturlevel')->where('KodeLevel', $KodeLevel)->delete();
+        //     $result = $this->akses::where('KodeLevel', $KodeLevel)->delete();
+        //     if ($result) {
+        //         echo json_encode([
+        //             'status' => true,
+        //             'msg'  => "Berhasil Menghapus Data"
+        //         ]);
+        //     } else {
+        //         echo json_encode([
+        //             'status' => false,
+        //             'msg'  => "Gagal Menghapus Data"
+        //         ]);
+        //     }
+        // }
     }
 
 }

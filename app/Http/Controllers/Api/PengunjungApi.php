@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Mstpengunjung;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Stevebauman\Purify\Facades\Purify;
 
@@ -153,5 +154,10 @@ class PengunjungApi extends Controller
         } else {
             return response()->json(['status' => false, 'message' => "Gagal menghapus data."], 304);
         }
+    }
+
+    public function get_data_user(Request $request){
+        $User=User::where('UserName',$request->username)->first();
+        return json()->$User;
     }
 }

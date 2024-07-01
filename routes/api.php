@@ -19,4 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/id',[App\Http\Controllers\Api\PengunjungApi::class,'getShow']);
+
 Route::auto('pengunjung', 'App\Http\Controllers\Api\PengunjungApi');

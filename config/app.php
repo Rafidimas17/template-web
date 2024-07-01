@@ -80,6 +80,7 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
+    'cipher' => 'AES-128-CBC',
 
     'locale' => 'en',
 

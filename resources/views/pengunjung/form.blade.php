@@ -30,8 +30,16 @@
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="mail" class="form-control" name="Email" placeholder="Masukkan email"
-                                value="{{ @$data->Email }}" required />
+                            <x-input-text 
+    name="Email" 
+    value="{{ @$data->Email }}" 
+    placeholder="Masukan email" 
+    id="email" 
+    class="form-control"
+    type="email"
+/>
+                            {{-- <input type="mail" class="form-control" name="Email" placeholder="Masukkan email"
+                                value="{{ @$data->Email }}" required /> --}}
                         </div>
                         <div class="form-group">
                             <label>Password</label>
