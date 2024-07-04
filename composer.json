@@ -8,13 +8,14 @@
         "php": "^7.3|^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "izniburak/laravel-auto-routes": "^1.0",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-        "yajra/laravel-datatables-oracle": "~9.0",
+        "php-mqtt/laravel-client": "^1.5",
         "stevebauman/purify": "^5.1",
-        "izniburak/laravel-auto-routes": "^1.0"
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
